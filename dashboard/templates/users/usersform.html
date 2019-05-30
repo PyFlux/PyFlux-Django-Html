@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load common_tag %}
+{% block content_area %}
+
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="x_panel">
+                <h2>{{ page_title }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="x_panel">
+
+        {% with form_url='/admin/saveuser/' %}
+
+        {% if user_details.id %}
+        {% set form_url = '/admin/updateuser/' %}
+        {% else %}
+        {% set form_url = '/admin/saveuser/' %}
+        {% endif %}
+
+        <form action="{{ form_url }}" method="post">
+            <div class="row">
+
+                {% if form.username %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.username.label_tag }}{% if form.username.field.required == "required" %}<span
+                            class="error_red"> * </span>{% endif %}
+                        {% render_field form.username value=user_details.username class="form-control" placeholder="Eg: Athena" %}
+                    </div>
+                    <span class="error_red"> {{ form.username.errors }} </span>
+                </div>
+                {% endif %}
+
+                {% if form.first_name %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.first_name.label_tag }}{% if form.first_name.field.required == "required" %}<span
+                            class="error_red"> * </span>{% endif %}
+                        {% render_field form.first_name value=user_details.first_name class="form-control" placeholder="Eg: Athena" %}
+                    </div>
+                    <span class="error_red"> {{ form.first_name.errors }} </span>
+                </div>
+                {% endif %}
+
+                {% if form.last_name %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.last_name.label_tag }}{% if form.last_name.field.required == "required" %}<span
+                            class="error_red"> * </span>{% endif %}
+                        {% render_field form.last_name value=user_details.last_name class="form-control" placeholder="Eg: Athena" %}
+                    </div>
+                    <span class="error_red"> {{ form.last_name.errors }} </span>
+                </div>
+                {% endif %}
+
+                {% if form.email %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.email.label_tag }}{% if form.email.field.required == "required" %}<span
+                            class="error_red"> * </span>{% endif %}
+                        {% render_field form.email value=user_details.email class="form-control" placeholder="Eg: Athena" %}
+                    </div>
+                    <span class="error_red"> {{ form.email.errors }} </span>
+                </div>
+                {% endif %}
+
+                {% if form.password %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.password.label_tag }}{% if form.password.field.required == "required" %}<span
+                            class="error_red"> * </span>{% endif %}
+                        {% render_field form.password class="form-control" placeholder="Eg: Athena" %}
+                    </div>
+                    <span class="error_red"> {{ form.password.errors }} </span>
+                </div>
+                {% endif %}
+
+                {% if form.confirm_password %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.confirm_password.label_tag }}{% if form.confirm_password.field.required == "required" %}<span
+                            class="error_red"> * </span>{% endif %}
+                        {% render_field form.confirm_password class="form-control" placeholder="Eg: Athena" %}
+                    </div>
+                    <span class="error_red"> {{ form.confirm_password.errors }} </span>
+                </div>
+                {% endif %}
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    {% if user_details.id %}
+                    <input type="hidden" name="user_id" value="{{ user_details.id }}"/>
+                    {% endif %}
+                    <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+                    <input type="submit" name="submit" value="Submit" class="btn btn-primary pull-right"/>
+                </div>
+            </div>
+            {% csrf_token %}
+            {% endwith %}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

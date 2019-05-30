@@ -1,0 +1,128 @@
+{% extends "dashboard/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load common_tag %}
+
+{% block content_area %}
+
+    {# Python Code for this page #}
+
+    <div class="right_col" role="main">
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <h2>{{ page_title }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="x_panel">
+
+
+            {% with form_url='/admin/savecity/' %}
+
+                {% if city_details.id %}
+                    {% set form_url = '/admin/updatebatch/' %}
+                {% else %}
+                    {% set form_url = '/admin/savecity/' %}
+                {% endif %}
+
+                <form action="{{ form_url }}" method="post">
+
+                    <span class="error_red"> {{ form.non_field_errors }} </span>
+
+                    <div class="row">
+                        {% if form.city_name %}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group control-required">
+                                    {{ form.city_name.label_tag }}
+                                    {% if form.city_name.field.required == "required" %}
+                                        <span class="error_red"> * </span>{% endif %}
+                                    {% render_field form.city_name value=city_details.city_name class="form-control" placeholder="City" %}
+                                </div>
+                                <span class="error_red"> {{ form.city_name.errors }} </span>
+                            </div>
+                        {% endif %}
+
+
+
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                {{ form.state_name.label_tag }}
+                                {% if form.state_name.field.required == "required" %}
+                                    <span class="error_red"> * </span>{% endif %}
+                                <select id="state_name_id" name="state_name" class="form-control select2">
+                                    {% for x,y in form.fields.state_name.choices %}
+                                        <option value="{{ x }}"
+                                                {% if city_details.state_name ==  x|stringformat:'s' %}
+                                                selected="selected"{% endif %}>{{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="error_red"> {{ form.state_name.errors }} </span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                {{ form.country_name.label_tag }}
+                                {% if form.country_name.field.required == "required" %}
+                                    <span class="error_red"> * </span>{% endif %}
+                                <select id="country_name_id" name="country_name" class="form-control select2">
+                                    {% for x,y in form.fields.country_name.choices %}
+                                        <option value="{{ x }}"
+                                                {% if city_details.country_name ==  x|stringformat:'s' %}
+                                                selected="selected"{% endif %}>{{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="error_red"> {{ form.country_name.errors }} </span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                {{ form.status.label_tag }}
+                                {% if form.status.field.required == "required" %}
+                                    <span class="error_red"> * </span>{% endif %}
+                                <select id="status_id" name="status" class="form-control select2">
+                                    {% for x,y in form.fields.status.choices %}
+                                        <option value="{{ x }}"
+                                                {% if city_details.status ==  x|stringformat:'s' %}
+                                                selected="selected"{% endif %}>{{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="error_red"> {{ form.status.errors }} </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    {% if city_details.id %}
+                        <input type="hidden" name="id" value="{{ city_details.id }}"/>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+                            <input type="submit" name="submit" value="Save" class="btn btn-primary pull-right"/>
+                        </div>
+                    </div>
+
+                    {% csrf_token %}
+
+                </form>
+                </div>
+
+            {% endwith %}
+
+    </div>
+    </div>
+
+{% endblock %}

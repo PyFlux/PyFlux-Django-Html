@@ -1,0 +1,92 @@
+{% load static %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'images/pyflux.ico' %}" type="image/ico"/>
+
+<title>Pyflux</title>
+
+<!-- Bootstrap -->
+<link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+<!-- NProgress -->
+<link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+<!-- iCheck -->
+<link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+<!-- bootstrap-progressbar -->
+<link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+<!-- JQVMap -->
+<link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+<!-- bootstrap-daterangepicker -->
+<link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+<!-- Custom Theme Style -->
+<link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+
+<!-- Datatables -->
+<link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+
+<!-- Select2 -->
+<link href="{% static 'vendors/select2/dist/css/select2.css' %}" rel="stylesheet">
+
+<!-- Toastr -->
+<link href="{% static 'vendors/toastr/build/toastr.min.css' %}" rel="stylesheet">
+
+{#<!-- PaticleJS -->#}
+{#<link href="{% static 'vendors/particlejs/style.css' %}" rel="stylesheet">#}
+
+<!-- jQuery -->
+<script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+
+<!-- Air Date Picker -->
+<link href="{% static 'vendors/airdatepicker/datepicker.min.css' %}" rel="stylesheet">
+<script src="{% static 'vendors/airdatepicker/datepicker.min.js' %}"></script>
+<script src="{% static 'vendors/airdatepicker/datepicker.en.js' %}"></script>
+
+<!-- Ripple effect JS -->
+<link href="{% static 'vendors/ripple_effect/ripple.min.css' %}" rel="stylesheet">
+<script src="{% static 'vendors/ripple_effect/ripple.min.js' %}"></script>
+<!-- Usage : <a class="material-ripple" data-ripple-color="#CB8962" href="#"> -->
+
+<!-- Core CSS and Core JS -->
+<link href="{% static 'custom/core_css.css' %}" rel="stylesheet">
+<script src="{% static 'custom/core_js.js' %}"></script>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+
+        <!-- Select2 class Initilization -->
+        jQuery(".select2").select2();
+
+        <!-- Toastr Initilization -->
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+    })
+</script>
+
+
+
+

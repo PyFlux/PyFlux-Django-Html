@@ -1,0 +1,52 @@
+
+Python Command’s
+pip install virtualenv
+which python
+which python3
+python3 -m venv Pyflux-Env
+cd Pyflux-Env
+source bin/activate
+(Pyflux-Env) Python/Pyflux-Env $ pip install django
+
+django-admin startproject Dashboard
+
+python3 manage.py runserver
+python3 manage.py makemigrations
+Migrations for App
+python3 manage.py makemigrations App_Name
+python3 manage.py migrate
+python3 manage.py createsuperuser
+
+Python3 manage.py sqlmigrate App_Name 001 (Gives SQL Query)
+
+Inside Pyflux :
+django-admin startapp academics
+
+python3 manage.py loaddata Pyflux/initilizations/userroles.json
+python3 manage.py loaddata Pyflux/initilizations/roles.json
+
+Username : superadmin
+Email : jinto1729@gmail.com
+Password : superadmin123
+
+Check which port is using what on Mac OS:
+lsof -i @localhost:8000 
+Kill the Process
+Kill -9 17510
+
+Youtube Links
+https://www.youtube.com/watch?v=RMJkLoAceW4&list=PLzXscUBmhxmpv6k3WMp7A0sYoZsSG_FB1
+
+Templating :
+https://www.youtube.com/watch?v=KuqIsXtBkN8
+
+Chris Hawkes, A full example of React and Django together, POST, GET etc... Part 1
+
+https://www.youtube.com/watch?v=wU-KUapq1kQ
+
+
+Google Search : python django backend with react tutorial
+
+Modern Django: Part 1: Setting up Django and React
+
+http://v1k45.com/blog/modern-django-part-1-setting-up-django-and-react/

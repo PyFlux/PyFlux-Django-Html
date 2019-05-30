@@ -1,0 +1,107 @@
+{% extends "dashboard/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load common_tag %}
+
+{% block content_area %}
+
+    {# Python Code for this page #}
+
+    <div class="right_col" role="main">
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <h2>{{ page_title }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="x_panel">
+
+
+            {% with form_url='/admin/savestate/' %}
+
+                {% if state_details.id %}
+                    {% set form_url = '/admin/updatestate/' %}
+                {% else %}
+                    {% set form_url = '/admin/savestate/' %}
+                {% endif %}
+
+                <form action="{{ form_url }}" method="post">
+
+                    <span class="error_red"> {{ form.non_field_errors }} </span>
+
+                    <div class="row">
+                        {% if form.state_name %}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group control-required">
+                                    {{ form.state_name.label_tag }}
+                                    {% if form.state_name.field.required == "required" %}
+                                        <span class="error_red"> * </span>{% endif %}
+                                    {% render_field form.state_name value=state_details.state_name class="form-control" placeholder="State" %}
+                                </div>
+                                <span class="error_red"> {{ form.state_name.errors }} </span>
+                            </div>
+                        {% endif %}
+
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                {{ form.country_name.label_tag }}
+                                {% if form.country_name.field.required == "required" %}
+                                    <span class="error_red"> * </span>{% endif %}
+                                <select id="country_name_id" name="country_name" class="form-control select2">
+                                    {% for x,y in form.fields.country_name.choices %}
+                                        <option value="{{ x }}"
+                                                {% if state_details.country_name == x|stringformat:'s' %}
+                                                selected="selected"{% endif %}>{{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="error_red"> {{ form.country_name.errors }} </span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                <label>{{ form.status.label_tag }}</label>
+                                <span class="error_red"> * </span>
+                                <select id="id" name="status" class="form-control select2">
+                                    {% for x,y in form.fields.status.choices %}
+                                        <option value="{{ x }}"
+                                                {% if state_details.status ==  x|stringformat:'s'%}
+                                                selected="selected"{% endif %}>{{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="error_red"> {{ form.status.errors }} </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {% if state_details.id %}
+                        <input type="hidden" name="id" value="{{ state_details.id }}"/>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+                            <input type="submit" name="submit" value="Save" class="btn btn-primary pull-right"/>
+                        </div>
+                    </div>
+
+                    {% csrf_token %}
+                </div>
+                </form>
+
+
+            {% endwith %}
+
+    </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends "base.jinja.html" %}
+
+{% block content_area %}
+
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                <div class="x_panel">
+                    <h5>{{ page_title }}</h5>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                {% include 'partials/toolbarsection.html' %}
+            </div>
+        </div>
+        <div class="row">
+            {% if model.advanced_filter.layout %}
+                {% include model.advanced_filter.layout %}
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <form action="{{ url('dashboard:dashboard.admin.actions') }}" method="post" class="admin_form"
+                  name="admin_listing"
+                  id="admin_listing">
+                <div class="col-md-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="dataTable_wrapper">
+                            <table class="table table-striped table-bordered bulk_action" id="datatable-buttons">
+                                <thead>
+                                <tr>
+                                    <th width="7%">
+                                        <input class="flat" type="checkbox" id="checkall" name="checkall"/>
+                                    </th>
+                                    {% with loopvariable=1 %}
+                                        {% for item in listable %}
+                                            <th>{{ item }}</th>
+                                        {% endfor %}
+                                    {% endwith %}
+                                    {# {{ forloop.counter }}#}
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                {% if model.routes %}
+                    {% if model.routes.add_route %}
+                        <input type="hidden" name="add_route" id="add_route" value="{{ model.routes.add_route }}/"/>
+                    {% endif %}
+                    {% if model.routes.edit_route %}
+                        <input type="hidden" name="edit_route" id="edit_route" value="{{ model.routes.edit_route }}/"/>
+                    {% endif %}
+                    {% if model.routes.view_route %}
+                        <input type="hidden" name="view_route" id="view_route" value="{{ model.routes.view_route }}/"/>
+                    {% endif %}
+                {% endif %}
+
+                <input type="hidden" name="table_name" id="table_name" value="{{ model.table_name }}"/>
+                <input type="hidden" name="acl_key" id="acl_key" value="{{ model.acl_key }}"/>
+                <input type="hidden" name="return_url" id="return_url" value="{{ request.path }}"/>
+                <input type="hidden" name="model_name" id="model_name" value="{{ model.model_name }}"/>
+                <input type="hidden" name="action_type" id="action_type" value=""/>
+                {# <input type="hidden" name="others" id="others" value="@if(\Input::has('others')) 1 @else 0 @endif"/> #}
+                <input type="hidden" id="filter_trashed" name="filter_trashed"
+                       value="{% if request.GET['filter_trashed'] %}1{% else %}0{% endif %}"></input>
+                <input type="hidden" name="accesstoken" id="accesstoken" value="{{ model.acl_key }}"/>
+                {% csrf_token %}
+            </form>
+            <form name="addeditview" id="addeditview" action="" method="get"/>
+            </form>
+        </div>
+
+        <script>
+            jQuery(document).ready(function () {
+
+                var handleDataTableButtons = function () {
+                    jQuery('#datatable-buttons').DataTable({
+                        dom: "Bfrtip",
+                        buttons: ['pageLength',
+                            {
+                                extend: "copy",
+                                className: "btn-md"
+                            },
+                            {
+                                extend: "csv",
+                                className: "btn-md"
+                            },
+                            /* {
+                             extend: "excel",
+                             className: "btn-md"
+                             },*/
+                            {
+                                extend: "pdfHtml5",
+                                className: "btn-md"
+                            },
+                            {
+                                extend: "print",
+                                className: "btn-md"
+                            },
+                            {% if request.GET['filter_trashed'] %}
+                                {
+                                    text: ' Clear Filter',
+                                    action: function (e, dt, node, config) {
+                                        var link = document.location.href.replace(document.location.search, "");
+                                        document.location.href = link;
+                                    }
+                                }
+                            {% else %}
+                                {
+                                    text: '<i class="fa fa-trash"></i> Trashed',
+                                    action: function (e, dt, node, config) {
+                                        document.location.href += "?filter_trashed=1";
+                                    }
+                                }
+                            {% endif %}
+                        ],
+                        "responsive": true,
+                        "columnDefs": [{"targets": 0, "orderable": false}],
+                        "aaSorting": [[1, 'desc']],
+                        "serverSide": true,
+                        "processing": true,
+                        "ajax": {
+                            {#url: "/ajaxview",#}
+                            url: "{{ url('dashboard:dashboard.admin.ajaxview') }}",
+                            data: function (d) {
+                                d.model_name = '{{ model_name }}';
+                                var custom_search = jQuery("input[type=search]").val()
+                                if (custom_search != '' && custom_search != 'undefined') {
+                                    d.custom_search = jQuery("input[type=search]").val();
+                                }
+
+                                {% if request.GET['filter_trashed'] %}
+                                    d.filter_trashed = '1';
+                                {% else %}
+                                    d.filter_trashed = '0';
+                                {% endif %}
+
+                                {% if model.advanced_filter.filters %}
+                                    {% for item in model.advanced_filter.filters %}
+                                        d.{{item}} = jQuery.trim(jQuery("#{{item}}").val()),
+                                    {% endfor %}
+                                {% endif %}
+
+                                {#        @if(!empty($table->advanced_filter['filters']))#}
+                                {#                @foreach($table->advanced_filter['filters'] as $filterkey=>$filterval)#}
+                                {#            d.{{$filterkey}} = jQuery.trim(jQuery("#{{$filterkey}}").val()),#}
+                                {#        @endforeach#}
+                                {#                @endif#}
+
+                                d.others = jQuery.trim(jQuery("#others").val());
+                            },
+
+                            dataFilter: function (reps) {
+                                console.log(reps);
+                                return reps;
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+
+                        },
+                        {#"columns": [#}
+                        {#    {data: 'sl', name: 'id'},#}
+                        {#    {data: 'name', name: 'name'},#}
+                        {#    {data: 'email', name: 'email'},#}
+                        {#                         {% for user in users %}#}
+                        {#                            {#}
+                        {#                                data: 'fields.username', name: 'fields.username'#}
+                        {#                            },#}
+                        {#                            {#}
+                        {#                                data: 'fields.email', name: 'fields.email'#}
+                        {#                            },#}
+                        {#                         {% endfor %}#}
+                        {#]#}
+                    });
+                };
+
+                TableManageButtons = function () {
+                    "use strict";
+                    return {
+                        init: function () {
+                            handleDataTableButtons();
+                        }
+                    };
+                }();
+                TableManageButtons.init();
+
+                jQuery('#datatable-buttons').on('draw.dt', function () {
+                    jQuery('input').iCheck({
+                        checkboxClass: 'icheckbox_flat-green'
+                    });
+                });
+
+            });
+        </script>
+
+{% endblock %}

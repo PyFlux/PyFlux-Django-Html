@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load common_tag %}
+{% block content_area %}
+
+    <div class='right_col' role='main'>
+        <div class='row'>
+            <div class='col-md-12 col-xs-12'>
+                <div class='x_panel'>
+                    <h2>{{ page_title }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class='x_panel'>
+
+            {% with form_url='/admin/saveuserrole/' %}
+
+                {% if userrole_details.id %}
+                    {% set form_url = '/admin/updateuserrole/' %}
+                {% else %}
+                    {% set form_url = '/admin/saveuserrole/' %}
+                {% endif %}
+
+                <form action='{{ form_url }}' method='post'>
+                <div class='row'>
+
+{#                {{ form }}#}
+
+                 {% if form.user_id %}
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                {{ form.user_id.label_tag }}
+                                {% if form.user_id.field.required == "required" %}
+                                    <span class="error_red"> * </span>
+                                {% endif %}
+
+                                <select name="user_id" class="form-control">
+                                 <option>--Select--</option>
+                                    {% for x,y in form.fields.user_id.choices %}
+                                        <option value="{{ x }}"
+                                                {% if userrole_details.user_id == x %} selected="selected"{% endif %} >
+                                            {{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+
+                                <span class="error_red"> {{ form.user_id.errors }} </span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if form.role_id %}
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-group control-required">
+                                {{ form.role_id.label_tag }}
+                                {% if form.role_id.field.required == "required" %}
+                                    <span class="error_red"> * </span>
+                                {% endif %}
+
+                                <select name="role_id" class="form-control select2">
+                                 <option value="0">--Select--</option>
+                                    {% for x,y in form.fields.role_id.choices %}
+                                        <option value="{{ x }}" {% if userrole_details.role_id == x|stringformat:'s' %}
+                                                selected="selected"{% endif %}>
+                                            {{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+
+                                <span class="error_red"> {{ form.role_id.errors }} </span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+                    </div>
+                    <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+                        {% if userrole_details.id %}
+                            <input type='hidden' name='userrole_id' value='{{ userrole_details.id }}'/>
+                        {% endif %}
+                        <a onclick='history.go(-1);' class='btn btn-danger pull-right'>Cancel</a>
+                        <input type='submit' name='submit' value='Submit' class='btn btn-info pull-right'/>
+                    </div>
+                </div>
+                {% csrf_token %}
+            {% endwith %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include '/partials/header_css.jinja.html' %}
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="/admin/dashboard" class="site_title"><i class="fa fa-graduation-cap"></i>
+                        <span>Pyflux 1.0</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+                
+                <br/>
+
+                <!-- sidebar menu -->
+                {% include '/partials/sidebar_menu.jinja.html' %}
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                {% include '/partials/sidebar_footer.html' %}
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        {% include '/partials/top_navigation.jinja.html' %}
+        <!-- /top navigation -->
+
+        <!-- Message Starts-->
+        {% include '/partials/statusmessages.html' %}
+        <!-- Message Ends-->
+
+        <!-- page content -->
+        {% block content_area %}
+        {% endblock %}
+        <!-- /page content -->
+
+    </div>
+    <!-- footer content -->
+    {% include '/partials/footer.html' %}
+    <!-- /footer content -->
+</div>
+
+
+{% include '/partials/footer_js.jinja.html' %}
+
+</body>
+</html>
+
+
+
+
+

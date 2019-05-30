@@ -1,0 +1,69 @@
+{% load sidebar_tag %}
+
+{% if user.is_authenticated %}
+    {% sideBar 0 as SS %}
+{% else %}
+    {% sideBar request.user.id as sidebar %}
+{% endif %}
+
+
+
+
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+    <div class="menu_section">
+
+
+        {% if request.user.id %}
+
+            <ul class="nav side-menu">
+                {% for key in main_menu %}
+
+                    {% if key.parent_menu == "0" %}
+                        <li>
+                        <a class="material-ripple"
+                           data-ripple-color="#CB8962">{{ key.icon|safe }} {{ key.menu_text }}
+                            <span class="fa fa-chevron-down"></span></a>
+                    {% endif %}
+
+                <ul class="nav child_menu">
+                    {% for sub_key in sub_menu %}
+                        {% if sub_key.parent_menu|slugify == key.id|slugify %}
+                            <li>
+                            <a href="#" class="material-ripple"
+                               data-ripple-color="#CB8962">
+                                <b>{{ sub_key.menu_text }}</b>
+                                <span class="fa fa-chevron-down"></span></a>
+
+                        {% endif %}
+
+                    <ul class="nav child_menu">
+
+                        {% for sub_sub_key in sub_sub_menu %}
+                            {% if sub_sub_key.parent_menu|slugify == sub_key.id|slugify and sub_key.parent_menu|slugify == key.id|slugify %}
+                                <li>
+                                    <a href="{{ sub_sub_key.link }}" class="material-ripple"
+                                       data-ripple-color="#CB8962">
+                                        {{ sub_sub_key.menu_text }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                    </ul>
+                    </li>
+
+                    {% endfor %}
+                </ul>
+                </li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            User Not logged in
+        {% endif %}
+    </div>
+</div>
+
+
+
+

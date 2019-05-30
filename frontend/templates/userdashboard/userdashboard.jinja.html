@@ -1,0 +1,21 @@
+{% extends "website/website_base.jinja.html" %}
+
+{% block content_area %}
+<div class="righ_conent_area">
+    <h5 class="main_title">Forms</h5>
+    <div class="contentarea_box">
+
+        <form action="#" method="post">
+
+            <div class="col-md-12 no_padding" style="margin-top: 25px;">
+                <div style="color: red">{{ message }} <a href="/authorizeapi">Do your things here</a></div>
+            </div>
+
+            {% csrf_token %}
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

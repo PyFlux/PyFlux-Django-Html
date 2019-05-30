@@ -1,0 +1,20 @@
+[
+  {
+    "model": "dashboard.roles",
+    "pk": 1,
+    "fields": {
+      "role_type": "SU",
+      "name": "Super Admin",
+      "status": 1
+    }
+  },
+  {
+    "model": "dashboard.roles",
+    "pk": 2,
+    "fields": {
+      "role_type": "A",
+      "name": "Admin",
+      "status": 1
+    }
+  }
+]

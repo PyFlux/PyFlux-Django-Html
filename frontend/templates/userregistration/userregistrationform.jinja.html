@@ -1,0 +1,130 @@
+{% extends "website/website_base.jinja.html" %}
+
+
+{% block content_area %}
+
+<div class="righ_conent_area">
+    <h5 class="main_title">{{page_title}}</h5>
+    <div class="contentarea_box">
+
+
+        {% if 1==1 %}
+        {% set page_variables = { 'form_url': '/userregisteraction/' } %}
+        {% else %}
+        {% set page_variables = { 'form_url': '/userregisteraction/' } %}
+        {% endif %}
+
+        {% if message %}
+        <div style="color: red;text-align: center">{{message}}</div>
+        {% endif %}
+
+        <form method="post" action="{{page_variables.form_url}}">
+            <div class="row">
+
+                {% if registerForm.full_name %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.full_name.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            {{registerForm.full_name}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                 {% if registerForm.first_name %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.first_name.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            {{registerForm.first_name}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if registerForm.last_name %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.last_name.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            {{registerForm.last_name}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if registerForm.username %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.username.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            {{registerForm.username}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+                {% if registerForm.email %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.email.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            {{registerForm.email}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if registerForm.password %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.password.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            {{registerForm.password}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if registerForm.confirm_password %}
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">{{registerForm.confirm_password.label}}</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            {{registerForm.confirm_password}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+                    <input type="submit" name="submit" value="Submit" class="btn btn-primary pull-right"/>
+                </div>
+            </div>
+
+            {% csrf_token %}
+
+        </form>
+
+
+    </div>
+</div>
+
+
+{% endblock %}

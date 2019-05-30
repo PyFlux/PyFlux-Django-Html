@@ -1,0 +1,75 @@
+{#{% load toolbar_tag %}#}
+
+<div class="x_panel">
+    <div class="pull-right">
+
+        {# {% toolbarPermissions as toolbar_permissions %}#}
+
+        {% set toolbar_permissions = toolbarPermissions() %}
+
+
+        {% if request.GET['filter_trashed'] %}
+        {% if toolbar_permissions.trash == 1 and show_toolbar.restore %}
+        <button onclick="findAction('restore');" class="btn btn-warning material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.restore }}
+        </button>
+        {% endif %}
+
+        {% if toolbar_permissions.trash == 1 and show_toolbar.forcedelete %}
+        <button onclick="findAction('forcedelete');" class="btn btn-danger material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.forcedelete }}
+        </button>
+        {% endif %}
+
+        {% else %}
+
+
+        {% if toolbar_permissions.view == 1 and show_toolbar.view %}
+        <button onclick="findRoute('view');" class="btn btn-dark material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.view }}
+        </button>
+        {% endif %}
+
+        {% if toolbar_permissions.add == 1 and show_toolbar.add %}
+        <button onclick="findRoute('add');" class="btn btn-success material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.add }}
+        </button>
+        {% endif %}
+
+        {% if toolbar_permissions.edit == 1 and show_toolbar.edit %}
+        <button onclick="findRoute('edit');" class="btn btn-primary material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.edit }}
+        </button>
+        {% endif %}
+
+        {% if toolbar_permissions.publish == 1 and show_toolbar.publish %}
+        <button onclick="findAction('enable');" class="btn btn-info material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.publish }}
+        </button>
+        {% endif %}
+
+        {% if toolbar_permissions.unpublish == 1 and show_toolbar.unpublish %}
+        <button onclick="findAction('disable');" class="btn btn-warning material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.unpublish }}
+        </button>
+        {% endif %}
+
+        {% if toolbar_permissions.trash == 1 and show_toolbar.trash %}
+        <button onclick="findAction('remove');" class="btn btn-danger material-ripple" type="button"
+                data-ripple-color="#CB8962">
+            {{ show_toolbar.trash }}
+        </button>
+        {% endif %}
+
+        {% endif %}
+
+
+    </div>
+</div>

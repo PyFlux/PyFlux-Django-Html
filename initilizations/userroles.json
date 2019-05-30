@@ -1,0 +1,29 @@
+[
+  {
+    "model": "dashboard.userroles",
+    "pk": 1,
+    "fields": {
+      "user_id": 1,
+      "role_id": 1,
+      "status": 1
+    }
+  },
+  {
+    "model": "dashboard.userroles",
+    "pk": 2,
+    "fields": {
+      "user_id": 1,
+      "role_id": 2,
+      "status": 1
+    }
+  },
+  {
+    "model": "dashboard.userroles",
+    "pk": 3,
+    "fields": {
+      "user_id": 2,
+      "role_id": 2,
+      "status": 1
+    }
+  }
+]

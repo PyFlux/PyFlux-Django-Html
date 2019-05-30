@@ -1,0 +1,128 @@
+{% extends "dashboard/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load common_tag %}
+
+{% block content_area %}
+
+    {# Python Code for this page #}
+
+    <div class="right_col" role="main">
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <h2>{{ page_title }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="x_panel">
+
+
+            {% with form_url='/admin/saveemailconfig/' %}
+
+                {% if emailconfig_details.id %}
+                    {% set form_url = '/admin/updateemailconfig/' %}
+                {% else %}
+                    {% set form_url = '/admin/saveemailconfig/' %}
+                {% endif %}
+
+                <form action="{{ form_url }}" method="post">
+
+                    <span class="error_red"> {{ form.non_field_errors }} </span>
+
+                    <div class="row">
+
+                        {% if form.firm_id %}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group control-required">
+                                    {{ form.firm_id.label_tag }}
+                                    {% if form.firm_id.field.required == "required" %}
+                                        <span class="error_red"> * </span>{% endif %}
+                                    <select id="firm_id_id" name="firm_id" class="form-control select2">
+                                        {% for x,y in form.fields.firm_id.choices %}
+                                            <option value="{{ x }}"
+                                                    {% if city_details.firm_id.value == x|stringformat:'s' %}
+                                                    selected
+                                                    {% endif %}>
+                                                {{ y }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <span class="error_red"> {{ form.firm_id.errors }} </span>
+                            </div>
+                        {% endif %}
+
+                        {% if form.per_day %}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group control-required">
+                                    {{ form.per_day.label_tag }}
+                                    {% if form.per_day.field.required == "required" %}
+                                        <span class="error_red"> * </span>{% endif %}
+                                    {% render_field form.per_day value=emailconfig_details.per_day class="form-control" placeholder="Per Day" %}
+                                </div>
+                                <span class="error_red"> {{ form.per_day.errors }} </span>
+                            </div>
+                        {% endif %}
+
+                        {% if form.per_month %}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group control-required">
+                                    {{ form.per_month.label_tag }}
+                                    {% if form.per_month.field.required == "required" %}
+                                        <span class="error_red"> * </span>{% endif %}
+                                    {% render_field form.per_month value=emailconfig_details.per_month class="form-control" placeholder="Per Month" %}
+                                </div>
+                                <span class="error_red"> {{ form.per_month.errors }} </span>
+                            </div>
+                        {% endif %}
+
+
+                        {% if form.status %}
+                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group control-required">
+                                    <label>{{ form.status.label_tag }}</label>
+                                    <span class="error_red"> * </span>
+                                    <select id="status_id" name="status" class="form-control select2">
+                                        {% for x,y in form.fields.status.choices %}
+                                            <option value="{{ x }}"
+                                                    {% if emailconfig_details.status ==  x|stringformat:'s' %}
+                                                    selected="selected"{% endif %}>{{ y }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="error_red"> {{ form.status.errors }} </span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <hr>
+
+                    {% if emailconfig_details.id %}
+                        <input type="hidden" name="id" value="{{ emailconfig_details.id }}"/>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+                            <input type="submit" name="submit" value="Save" class="btn btn-primary pull-right"/>
+                        </div>
+                    </div>
+
+                    {% csrf_token %}
+
+                </form>
+                </div>
+
+
+            {% endwith %}
+
+    </div>
+    </div>
+
+{% endblock %}

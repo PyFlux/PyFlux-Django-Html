@@ -1,0 +1,28 @@
+[
+  {
+    "model": "dashboard.users",
+    "pk": 1,
+    "fields": {
+      "id" : 1,
+      "username": "superadmin",
+      "first_name": "Super Admin",
+      "last_name": "",
+      "email": "superadmin@gmail.com",
+      "password": "pbkdf2_sha256$120000$aECsa1zRP6xF$D90GioGGWtU2gn+yU9QTo2d7hCNWFonBLqkc72Z8LyI=",
+      "status": 1
+    }
+  },
+  {
+    "model": "dashboard.users",
+    "pk": 2,
+    "fields": {
+      "id" : 2,
+      "username": "admin",
+      "first_name": "Admin",
+      "last_name": "",
+      "email": "admin@gmail.com",
+      "password": "pbkdf2_sha256$120000$Ks6li8cP5O0E$ACAuBpwcEwLyDWLGlaaUcJag1oMlndf9n8L71dbfp5s=",
+      "status": 1
+    }
+  }
+]

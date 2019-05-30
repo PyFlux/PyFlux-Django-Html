@@ -1,0 +1,430 @@
+{#{{ static('vendors/bootstrap/dist/css/bootstrap.min.css') }}#}
+{##}
+{#<link href="{{ static('vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">#}
+{##}
+{#{% set users = ['alice','bob','eve'] %}#}
+{#{% set foundUser = { 'flag': False } %}#}
+{#{% set counter1 = {'test':0} %}#}
+{#First : {{ foundUser.flag }}#}
+{#<br>#}
+{#{{ counter1 }}#}
+{#<br>#}
+{#{% for user in users %}#}
+{#    {% if user == "bob" %}#}
+{#        {% if foundUser.update({'flag':True}) %}#}
+{#        {% endif %}#}
+{#    {% endif %}#}
+{#    My name is {{ user }}, has bob been found? {{ foundUser.flag }} <br>#}
+{#    {% if counter1.update({'test':999}) %}{% endif %}#}
+{#{% endfor %}#}
+{#{{ counter1 }}#}
+{#<br>#}
+{#Last : {{ foundUser.flag }}#}
+{#<br>#}
+{##}
+{#{% block content_area %}#}
+{#    Test#}
+{#{% endblock %}#}
+{#<br>#}
+{#>>>> Incrementing Value#}
+{#<br>#}
+{#{% set count = 10 %}#}
+{#{{ page_variables.count }}#}
+{#<br>#}
+{#{% set count = count + 1 %}#}
+{#{{ page_variables.count }}#}
+{#<br>#}
+{#Hello {{ calcName('Gandalf', 2) }}#}
+{#<br>#}
+{#------------------------------------------------------------------------------------------------------------------------#}
+{#<br>#}
+
+
+{% extends "base.jinja.html" %}
+
+
+
+{#{% load acl_tag %}#}
+{#{% load common_tag %}#}
+
+{% block content_area %}
+
+    {% set page_variables = { 'count': 1,'maincounter': 0,'subcounter': 0,'subsubcounter': 0,'skip_main_menu': 0,'role_id': 0,'temp_key_acl': 0, } %}
+
+    <div class="right_col" role="main">
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <h2>{{ page_title }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="x_panel">
+
+            <form action="{{ url('dashboard:dashboard.admin.setpermission') }}" method="post"
+                  onsubmit="return ConfirmCheck()">
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="form-group control-required">
+                            <label>User Role</label> <span class="error_red"> * </span>
+                            <select name="role_id" class="form-control js-permission-role select2" required>
+                                <option value="0">Choose Group</option>
+                                <!--<option value="1" {% if request.GET['id'] == '1' %} selected {% endif %} >Super Admin</option>-->
+                                <!--<option value="2" {% if request.GET['id'] == '2' %} selected {% endif %} >Admin</option>-->
+                                {% for role in roles %}
+                                <option value="{{role.id}}" {% if request.GET.id %} {% if request.GET["id"]|int == role.id|int %} selected {% endif %} {% endif %}>{{role.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="current_user_group" id="current_user_group" value="1">
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="form-group control-required" style="margin-top: 25px;">
+                            <input type="submit" name="submit" value="Submit" class="btn btn-primary pull-right"/>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+
+
+
+                <!--Role ID  : {{ request.GET.id }}-->
+                <!--Path  : {{ request.path }}-->
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <th>Menus</th>
+                                    <th>Order</th>
+                                    <th>
+                                        <input type="checkbox" id="view_all_permissions" class="flat ch_box">
+                                        View
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" id="add_all_permissions" class="flat ch_box">
+                                        Add
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" id="edit_all_permissions" class="flat ch_box">
+                                        Edit
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" id="delete_all_permissions" class="flat ch_box">
+                                        Delete
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" id="check_all_permissions" class="flat ch_box">
+                                        All
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+
+                        {% if request.GET['id'] %}
+                            {% set role_id = request.GET['id'] %}
+                        {% else %}
+                            {% set role_id = 0 %}
+                        {% endif %}
+
+                        {% if menugroups %}
+
+                            {% for key in menugroups %}
+
+                                {% set level0result = levelZero(key.main_menu_key,key.acl_key,role_id) %}
+
+
+                                {% if key.main_menu_key %}
+                                    {% set main_menu_key = key.main_menu_key %}
+                                {% else %}
+                                    {% set main_menu_key = "No Main menu key set" %}
+                                {% endif %}
+
+                                {% if key %}
+
+                                    {% for sub_key in key.sub_menu %}
+
+                                        {% set level1result = levelOne(sub_key.sub_menu_key,sub_key.acl_key,role_id) %}
+
+                                        {% if sub_key.sub_menu_key %}
+                                            {% set sub_menu_key = sub_key.sub_menu_key %}
+                                        {% else %}
+                                            {% set sub_menu_key = "No Sub Menu key set" %}
+                                        {% endif %}
+
+                                        {% if sub_key.sub_menu_key %}
+                                            {% if level0result.main_menu_key == sub_key.sub_menu_key %}
+
+                                                {% if sub_key %}
+                                                    {% for sub_sub_key in sub_key.sub_sub_menu %}
+                                                        {% if sub_sub_key.sub_sub_menu_key %}
+                                                            {% if sub_menu_key == sub_sub_key.sub_sub_menu_key %}
+
+
+                                                                {% set level2result = levelTwo(sub_sub_key.acl_key,role_id) %}
+
+                                                                <div class="row">
+                                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                                        {% set skip_main_menu = 0 %}
+
+                                                                        {% if page_variables.temp_key_acl %}
+                                                                            {% if page_variables.temp_key_acl == key.acl_key %}
+                                                                                {% set skip_main_menu = 1 %}
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                            {% set skip_main_menu = 0 %}
+                                                                        {% endif %}
+
+                                                                        {% if skip_main_menu == 0 %}
+                                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                                                <table class="table table-responsive">
+                                                                                    <tr>
+                                                                                        <td>{{ key.menu_icon|safe }}
+                                                                                            {{ key.menu_text }}
+                                                                                            <input type="hidden"
+                                                                                                   name="main_menu_text[]"
+                                                                                                   value="{{ key.menu_text }}"/>
+                                                                                            <input type="hidden"
+                                                                                                   name="main_menu_icon[]"
+                                                                                                   value="{{ key.menu_icon }}"/>
+                                                                                            <input type="hidden"
+                                                                                                   name="main_menu_acl_key[]"
+                                                                                                   value="{{ key.acl_key }}"/>
+                                                                                        </td>
+                                                                                        <td><input type="number"
+                                                                                                   name="main_menu_order[]"
+                                                                                                   style="width: 50px;"
+                                                                                                {% if level0result.main_menu_data.ordering is defined %}
+                                                                                                   value="{{ level0result.main_menu_data.ordering }}"
+                                                                                                {% endif %} />
+                                                                                        </td>
+                                                                                        <td><input type="checkbox"
+                                                                                                {% if level0result.main_menu_data.view == '1' %}
+                                                                                                   checked="checked"
+                                                                                                {% endif %}
+                                                                                                   name="main_menu_view_{{ page_variables.maincounter }}"
+                                                                                                   class="view_chk flat
+                                                                                                                                                ch_box"/>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                                            </div>
+                                                                        {% endif %}
+
+                                                                        {% if page_variables.update({'temp_key_acl':key.acl_key}) %}
+                                                                        {% endif %}
+
+                                                                        {% set skip_sub_menu = 0 %}
+
+                                                                        {% if page_variables.temp_sub_key_acl %}
+                                                                            {% if page_variables.temp_sub_key_acl == sub_key.acl_key %}
+                                                                                {% set skip_sub_menu = 1 %}
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                            {% set skip_sub_menu = 0 %}
+                                                                        {% endif %}
+
+
+                                                                        {% if skip_sub_menu == 0 %}
+                                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                                                <table class="table table-responsive">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {{ sub_key.menu_icon|safe }}
+                                                                                            {{ sub_key.menu_text }}
+                                                                                            <input type="hidden"
+                                                                                                   name="sub_menu_text[]"
+                                                                                                   value="{{ sub_key.menu_text }}"/>
+                                                                                            <input type="hidden"
+                                                                                                   name="sub_menu_icon[]"
+                                                                                                   value="{{ sub_key.menu_icon }}"/>
+                                                                                            <input type="hidden"
+                                                                                                   name="sub_menu_acl_key[]"
+                                                                                                   value="{{ sub_key.acl_key }}"/>
+                                                                                            <input type="hidden"
+                                                                                                   name="sub_menu_parent_acl_key[]"
+                                                                                                   value="{{ key.acl_key }}"/>
+
+                                                                                        </td>
+                                                                                        <td><input type="number"
+                                                                                                   name="sub_menu_order[]"
+                                                                                                   style="width: 50px;"
+
+                                                                                                {% if level1result.sub_menu_data.ordering is defined %}
+                                                                                                   value="{{ level1result.sub_menu_data.ordering }}"
+                                                                                                {% endif %}
+                                                                                        />
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="checkbox"
+
+                                                                                                    {% if level1result.sub_menu_data.view == '1' %}
+                                                                                                   checked="checked"
+                                                                                                    {% endif %}
+
+                                                                                                   name="sub_menu_view_{{ page_variables.subcounter }}"
+                                                                                                   class="view_chk flat
+                                                                                                                                                ch_box"/>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                                            </div>
+                                                                        {% endif %}
+
+
+                                                                        {% if page_variables.update({'temp_sub_key_acl':sub_key.acl_key}) %}
+                                                                        {% endif %}
+
+
+                                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                                                            <table class="table table-responsive">
+                                                                                <tr>
+                                                                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                                        {{ sub_sub_key.menu_text }}
+                                                                                        <input type="hidden"
+                                                                                               name="sub_sub_menu_link[]"
+                                                                                               value="{{ sub_sub_key.link }}"/>
+                                                                                        <input type="hidden"
+                                                                                               name="sub_sub_menu_text[]"
+                                                                                               value="{{ sub_sub_key.menu_text }}"/>
+                                                                                        <input type="hidden"
+                                                                                               name="sub_sub_menu_acl_key[]"
+                                                                                               value="{{ sub_sub_key.acl_key }}"/>
+                                                                                        <input type="hidden"
+                                                                                               name="sub_sub_menu_parent_acl_key[]"
+                                                                                               value="{{ sub_key.acl_key }}"/>
+                                                                                        <input type="hidden"
+                                                                                               name="sub_sub_menu_app_name[]"
+                                                                                               value="{{ sub_sub_key.app_name }}"/>
+                                                                                        <input type="hidden"
+                                                                                               name="sub_sub_menu_model_name[]"
+                                                                                               value="{{ sub_sub_key.model_name }}"/>
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="number"
+                                                                                               name="sub_sub_menu_order[]"
+                                                                                                {% if level2result.sub_sub_menu_data.ordering is defined %}
+                                                                                               value="{{ level2result.sub_sub_menu_data.ordering }}"
+                                                                                                {% endif %}
+                                                                                        />
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {% if page_variables.update({'subsubcounter':page_variables.count-1}) %}
+                                                                                        {% endif %}
+                                                                                        <input type="checkbox"
+                                                                                               name="sub_sub_menu_view_{{ page_variables.subsubcounter }}"
+                                                                                               class="view_chk flat ch_box view_{{ page_variables.count }}"
+                                                                                                {% if level2result.sub_sub_menu_data.view == '1' %}
+                                                                                               checked="checked"
+                                                                                                {% endif %}
+                                                                                        />
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="checkbox"
+                                                                                               name="sub_sub_menu_add_{{ page_variables.subsubcounter }}"
+                                                                                               class="add_chk flat ch_box add_{{ page_variables.count }}"
+                                                                                                {% if level2result.sub_sub_menu_data.add == '1' %}
+                                                                                               checked="checked"
+                                                                                                {% endif %}
+                                                                                        />
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="checkbox"
+                                                                                               name="sub_sub_menu_edit_{{ page_variables.subsubcounter }}"
+                                                                                               class="edit_chk flat ch_box edit_{{ page_variables.count }}"
+                                                                                                {% if level2result.sub_sub_menu_data.edit == '1' %}
+                                                                                               checked="checked"
+                                                                                                {% endif %}   />
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="checkbox"
+                                                                                               name="sub_sub_menu_delete_{{ page_variables.subsubcounter }}"
+                                                                                               class="del_chk flat ch_box del_{{ page_variables.count }}"
+                                                                                                {% if level2result.sub_sub_menu_data.trash == '1' %}
+                                                                                               checked="checked"
+                                                                                                {% endif %}     />
+                                                                                    </td>
+                                                                                    <td><input type="checkbox"
+                                                                                               id="check_current_row_{{ page_variables.count }}"
+                                                                                               class="chk_current_row flat ch_box"/>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+
+                                                                            {% if page_variables.update({'count':page_variables.count+1}) %}
+                                                                            {% endif %}
+
+                                                                            {% if page_variables.update({'subsubcounter':page_variables.subsubcounter+1}) %}
+                                                                            {% endif %}
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if page_variables.update({'subcounter':page_variables.subcounter+1}) %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if page_variables.update({'maincounter':page_variables.maincounter+1}) %} {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="form-group control-required">
+                            <input type="submit" name="submit" value="Submit" class="btn btn-primary pull-right"/>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                {% csrf_token %}
+
+            </form>
+
+            <script>
+                function ConfirmCheck() {
+                    return true;
+                }
+            </script>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+

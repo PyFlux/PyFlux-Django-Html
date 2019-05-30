@@ -1,0 +1,67 @@
+{% extends "dashboard/base.html" %}
+{% load widget_tweaks %}
+{% load common_tag %}
+{% block content_area %}
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="x_panel">
+                <h2>{{ page_title }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="x_panel">
+        {% with form_url='/admin/saverole/' %}
+        {% if role_details.id %}
+        {% set form_url = '/admin/updaterole/' %}
+        {% else %}
+        {% set form_url = '/admin/saverole/' %}
+        {% endif %}
+        <form action="{{ form_url }}" method="post">
+            <span class="error_red"> {{ form.non_field_errors }} </span>
+            <div class="row">
+                {% if form.role_name %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.role_name.label_tag }}
+                        {% if form.role_name.field.required == "required" %}
+                        <span class="error_red"> * </span>{% endif %}
+                        {% render_field form.role_name value=role_details.name class="form-control" placeholder="Eg: Admin" %}
+                    </div>
+                    <span class="error_red"> {{ form.role_name.errors }} </span>
+                </div>
+                {% endif %}
+
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="form-group control-required">
+                        {{ form.status.label_tag }}
+                        {% if form.status.field.required == "required" %}
+                        <span class="error_red"> * </span>{% endif %}
+                        <select id="status_id" name="status" class="form-control">
+                            {% for x,y in form.fields.status.choices %}
+                            <option value="{{ x }}" {% if role_details.status == x|stringformat:'s' %} selected="selected" {% endif %} > {{ y }} </option>
+                            {% endfor %}
+                        </select>
+                        <span class="error_red"> {{ form.status.errors }} </span>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            {% if role_details.id %}
+            <input type="hidden" name="role_id" value="{{ role_details.id }}"/>
+            {% endif %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+                    <input type="submit" name="submit" value="Save" class="btn btn-primary pull-right"/>
+                </div>
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+    {% endwith %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "website/website_base.jinja.html" %}
+
+{% block content_area %}
+
+<div class="righ_conent_area">
+    <h2 class="main_title"></h2>
+    <div class="contentarea_box">
+
+        {% if message %}
+        <div style="color: green;text-align: center">{{message}}</div>
+        {% endif %}
+
+        <form action="{{ url('frontend:frontend.admin.userlogincheck') }}" method="post">
+
+            <h1>Login</h1>
+            <div>
+                <input type="text" class="form-control" placeholder="Username" required=""
+                       name="username"
+                       id="id_username"/>
+            </div>
+            <br>
+            <div>
+                <input type="password" class="form-control" placeholder="Password" required=""
+                       name="password"
+                       id="id_password"/>
+            </div>
+            {% csrf_token %}
+            <br>
+            <button type="submit" class="btn btn-success btn-sm">Login</button>
+            <a href="/userregister/"> New User ..? Register here</a>
+            <div class="separator">
+                <div class="clearfix"></div>
+                <br/>
+                <i class="fa fa-home"></i> PyFlux
+                <p>© 2018 All Rights Reserved. <a href="#">Privacy and Terms</a></p>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock %}

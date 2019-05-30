@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content_area %}
+
+    {# Python Code for this page #}
+
+    <div class="right_col" role="main">
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <h2>For Testing Purpose Only...</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="x_panel">
+
+            <form method="post">
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="form-group control-required">
+                            <label>Text Box</label><span class="error_red"> * </span>
+                            <input type="test" name="test" id="test" class="form-control" placeholder="Test">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="form-group control-required">
+                            <label>Select box wiht select2</label><span class="error_red"> * </span>
+                            <select class="form-control select2">
+                                <option value="volvo">Volvo</option>
+                                <option value="saab">Saab</option>
+                                <option value="mercedes">Mercedes</option>
+                                <option value="audi">Audi</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <label>Date Picker</label><span class="error_red"> * </span>
+                        <input type="test" name="test" id="test" class="form-control datepicker-here" placeholder="Test"
+                               data-language="en" data-timepicker="false" data-time-format="hh:ii aa">
+                        <span class="error_red"></span>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <label>Date Picker with Time</label><span class="error_red"> * </span>
+                        <input type='text' id='timepicker-actions-exmpl' class="form-control"/>
+                    </div>
+                    <script>
+                        // Create start date
+                        var start = new Date(),
+                            prevDay,
+                            startHours = 9;
+
+                        // 09:00 AM
+                        start.setHours(9);
+                        start.setMinutes(0);
+
+                        // If today is Saturday or Sunday set 10:00 AM
+                        if ([6, 0].indexOf(start.getDay()) != -1) {
+                            start.setHours(10);
+                            startHours = 10
+                        }
+
+                        $('#timepicker-actions-exmpl').datepicker({
+                            timepicker: true,
+                            language: 'en',
+                            startDate: start,
+                            minHours: startHours,
+                            maxHours: 18,
+                            onSelect: function (fd, d, picker) {
+                                // Do nothing if selection was cleared
+                                if (!d) return;
+
+                                var day = d.getDay();
+
+                                // Trigger only if date is changed
+                                if (prevDay != undefined && prevDay == day) return;
+                                prevDay = day;
+
+                                // If chosen day is Saturday or Sunday when set
+                                // hour value for weekends, else restore defaults
+                                if (day == 6 || day == 0) {
+                                    picker.update({
+                                        minHours: 10,
+                                        maxHours: 16
+                                    })
+                                } else {
+                                    picker.update({
+                                        minHours: 9,
+                                        maxHours: 18
+                                    })
+                                }
+                            }
+                        })
+                    </script>
+
+                    <hr>
+
+
+                </div>
+
+
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <a onclick="history.go(-1);" class="btn btn-success pull-right">Cancel</a>
+            </div>
+        </div>
+
+        {% csrf_token %}
+        </form>
+
+    </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+
+{% if request.user.id %}
+<div class="menu_section" id="nav">
+    <ul class="list-unstyled">
+        <li><a href="/userlogout">Sign Out</a></li>
+    </ul>
+</div>
+
+{% else %}
+
+<ul class="list-unstyled">
+    <li><a href="/userlogin">Login</a></li>
+    <li><a href="/userregister">Register</a></li>
+</ul>
+{% endif %}
+
+
+<!-- Javascript -->
+
+<script type="text/javascript">
+$(function(){
+    var current = location.pathname;
+    $('#nav li a').each(function(){
+        var $this = $(this);
+        // if the current path is like this link, make it active
+        if($this.attr('href').indexOf(current) !== -1){
+            $this.addClass('active');
+        }
+    })
+})
+</script>
+<!-- Javascript -->

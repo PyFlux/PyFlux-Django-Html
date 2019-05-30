@@ -1,0 +1,101 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+.no_padding{
+	padding: 0 !important;
+}
+.padding_sm{
+	padding: 0 5px;
+}
+.padding_xs{
+	padding: 0 2px;
+}
+.no_margin{
+	margin: 0;
+}
+.leftmenu_section{
+	background: #609fd7;
+		width: 20%;
+		position: fixed;
+		height: 100%;
+		top:0;
+		left: 0;
+		color: #FFF;
+}
+.leftmenu_section h4 {
+	font-size: 22px;
+	padding: 11px 0;
+}
+.version {
+	font-size: 12px;
+	background: #77b0de;
+	padding: 2px 0;
+}
+.logo{
+	display: block;
+	padding: 25px 0;
+}
+.menu_section li {
+	font-size: 18px;
+}
+.menu_section li a {
+	color: #FFF;
+	display: block;
+	border-top: 5px solid #95c4e7;
+	padding: 10px 0;
+}
+.menu_section li a:hover{
+	background: #85b9e2;
+	text-decoration: none;
+}
+.menu_section li a.active{
+	background: #85b9e2;
+	text-decoration: none;
+}
+
+.righ_conent_area {
+	width: 80%;
+	position: absolute;
+	top: 0;
+	left: 20%;
+}
+.main_title {
+	background: #95c4e7;
+	padding: 25px 0;
+	color: #FFF;
+	margin: 0;
+	text-align: center;
+}
+.contentarea_box {
+	margin: auto;
+	width: 80%;
+	padding: 10px 0;
+}
+.form-control, .btn{
+	border-radius: 0;
+}
+.group_members{
+	color: #1a1d26;
+	font-size: 16px;
+}
+.membersheading_row{
+	font-size: 12px;
+	padding: 40px 0 15px 0;
+	border-bottom: 2px solid #e6e7e6;
+	margin-bottom: 20px;
+}
+.telegram_table{
+	font-size: 13px;
+}
+.telegram_table.table-striped > tbody > tr:nth-child(2n+1) {
+	background-color: #e8f6fe;
+}
+.table_sm.table-condensed > thead > tr > th, .table_sm.table-condensed > tbody > tr > th, .table_sm.table-condensed > tfoot > tr > th, .table_sm.table-condensed > thead > tr > td, .table_sm.table-condensed > tbody >tr > td, .table_sm.table-condensed > tfoot > tr > td {
+padding: 2px;
+}
+
+
+
+

@@ -1,0 +1,61 @@
+{% load static %}
+
+<html>
+<head>
+    {% include 'dashboard/partials/header_css.html' %}
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="/admin/dashboard" class="site_title">
+                        <i class="fa fa-home"></i>
+                        <span>Pyflux 1.0</span>
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+                <br/>
+
+                <!-- sidebar menu -->
+                {% include 'partials/sidebar_menu.html' %}
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                {% include 'dashboard/partials/sidebar_footer.html' %}
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        {% include 'dashboard/partials/top_navigation.html' %}
+        <!-- /top navigation -->
+
+        <!-- Message Starts-->
+        {% include 'dashboard/partials/statusmessages.html' %}
+        <!-- Message Ends-->
+
+        <!-- page content -->
+        {% block content_area %}
+        {% endblock %}
+        <!-- /page content -->
+
+    </div>
+    <!-- footer content -->
+    {% include 'dashboard/partials/footer.html' %}
+    <!-- /footer content -->
+</div>
+
+
+{% include 'dashboard/partials/footer_js.html' %}
+
+</body>
+</html>
+
+
+
+
+
