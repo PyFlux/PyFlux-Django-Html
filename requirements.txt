@@ -3,7 +3,7 @@ bleach==3.0.2
 Django==2.0.5
 django-cors-headers==2.4.0
 django-datatables-view==1.16.0
-django-debug-toolbar==1.9.1
+django-debug-toolbar==1.11.1
 django-jinja==2.4.1
 django-seed==0.1.9
 django-webpack-loader==0.6.0
